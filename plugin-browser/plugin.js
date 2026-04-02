@@ -670,9 +670,9 @@ else {
 //#endregion
 //#region plugins/plugin-browser/components/Plugins.scss
 const classes$1 = {
+	"loading": "L-W60G_loading",
 	"subtitle": "L-W60G_subtitle",
 	"pluginList": "L-W60G_pluginList",
-	"loading": "L-W60G_loading",
 	"repoHeader": "L-W60G_repoHeader",
 	"split": "L-W60G_split"
 };
@@ -729,8 +729,8 @@ async function getAllPlugins() {
 //#region plugins/plugin-browser/components/PluginCard.scss
 const classes = {
 	"contents": "THQemG_contents",
-	"pluginCard": "THQemG_pluginCard",
 	"buttonContainer": "THQemG_buttonContainer",
+	"pluginCard": "THQemG_pluginCard",
 	"installButton": "THQemG_installButton"
 };
 const css = `.THQemG_pluginCard {
