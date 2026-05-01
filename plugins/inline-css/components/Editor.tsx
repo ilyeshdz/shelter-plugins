@@ -112,7 +112,7 @@ export default function (props: Props) {
         </Button>
       </div>
 
-      <div class={classes.ceditor} ref={ref} data-popout={props.popout ? "true" : "false"}>
+      <div class={classes.ceditor} ref={ref} data-popout={props.popout ? 'true' : 'false'}>
         <CodeInput
           highlightjs={hljs}
           autoHeight={false}
