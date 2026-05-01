@@ -6,7 +6,6 @@ const {
     SwitchItem,
     Header,
     HeaderTags,
-    Text
   }
 } = shelter
 
