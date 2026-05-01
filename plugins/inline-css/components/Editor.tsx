@@ -66,6 +66,11 @@ export default function (props: Props) {
           automaticLayout: true,
           scrollBeyondLastLine: false,
           lineNumbers: 'on',
+          lineNumbersMinChars: 3,
+          lineDecorationsWidth: 5,
+          showFoldingControls: 'mouseover',
+          glyphMargin: false,
+          folding: false,
           wordWrap: 'on'
         })
 

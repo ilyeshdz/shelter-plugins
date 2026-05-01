@@ -28,6 +28,15 @@
 
 .ceditor .monaco-editor {
   height: 100% !important;
+
+  .line-numbers {
+    text-align: right !important;
+    padding-right: 4px !important;
+  }
+
+  .glyph-margin {
+    width: 0px !important;
+  }
 }
 
 .ceditor[data-popout="true"] .monaco-editor {
