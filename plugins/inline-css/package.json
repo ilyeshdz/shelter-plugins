@@ -1,7 +1,7 @@
 {
   "name": "inline-css",
   "dependencies": {
-    "@monaco-editor/loader": "^1.4.0"
+    "@monaco-editor/loader": "^1.7.0"
   },
   "type": "module"
 }
