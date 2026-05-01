@@ -35,36 +35,16 @@
 
   box-shadow: 0 0 3px 0 rgba(0, 0, 0);
 
+  display: flex;
+  flex-direction: column;
+
   & .inner {
     margin: 8px;
-    overflow-y: auto;
-    height: calc(100% - 50px);
-
-    /* Scrollbar */
-    &::-webkit-scrollbar-corner {
-      background: transparent
-    }
-  
-    &::-webkit-scrollbar {
-      background: transparent;
-    }
-  
-    &::-webkit-scrollbar-track {
-      background: none;
-    }
-  
-    &::-webkit-scrollbar-thumb {
-      background: var(--background-base-lowest);
-      border-radius: 4px;
-    }
-  
-    &::-webkit-scrollbar:horizontal {
-      height: 8px;
-    }
-  
-    &::-webkit-scrollbar:vertical {
-      width: 8px;
-    }
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -96,4 +76,8 @@
 
 .main {
   margin-right: 10px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
