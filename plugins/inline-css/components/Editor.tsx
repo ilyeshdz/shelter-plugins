@@ -68,9 +68,8 @@ export default function (props: Props) {
           lineNumbers: 'on',
           lineNumbersMinChars: 3,
           lineDecorationsWidth: 5,
-          showFoldingControls: 'mouseover',
           glyphMargin: false,
-          folding: false,
+          folding: true,
           wordWrap: 'on'
         })
 
