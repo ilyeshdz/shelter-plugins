@@ -113,6 +113,13 @@ const components = [
       div[class*="containerWithMargin"][role="button"] { display: none; }
     `
   },
+  {
+    name: 'New friend wave button',
+    description: 'Removes the "Wave" button beside new friends in the DM list',
+    rules: `
+      div[class*="waveButton"] { display: none; }
+    `
+  },
 
   // misc
   {
