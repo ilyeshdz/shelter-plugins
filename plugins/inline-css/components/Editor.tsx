@@ -61,52 +61,50 @@ export default function (props: Props) {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
     onCleanup(() => observer.disconnect())
 
-    requestAnimationFrame(() => {
-      const container = ref
-      if (!container || editorInstance) return
+    const container = ref
+    if (!container || editorInstance) return
 
-      loader.init().then((monaco) => {
-        if (editorInstance) {
-          editorInstance.dispose()
-        }
+    loader.init().then((monaco) => {
+      if (editorInstance) {
+        editorInstance.dispose()
+      }
 
-        editorInstance = monaco.editor.create(container, {
-          value: store.inlineCss || '',
-          language: 'css',
-          theme: isDark() ? 'vs-dark' : 'vs',
-          minimap: { enabled: false },
-          fontSize: 14,
-          automaticLayout: true,
-          scrollBeyondLastLine: false,
-          lineNumbers: 'on',
-          lineNumbersMinChars: 3,
-          lineDecorationsWidth: 5,
-          glyphMargin: false,
-          folding: true,
-          wordWrap: 'on'
-        })
-
-        createEffect(() => {
-          if (editorInstance) {
-            editorInstance.updateOptions({
-              theme: isDark() ? 'vs-dark' : 'vs'
-            })
-          }
-        })
-
-        editorInstance.onDidChangeModelContent(() => {
-          const value = editorInstance.getValue()
-          if (hotReload()) {
-            saveCss(value, props.styleElm)
-          }
-        })
+      editorInstance = monaco.editor.create(container, {
+        value: store.inlineCss || '',
+        language: 'css',
+        theme: isDark() ? 'vs-dark' : 'vs',
+        minimap: { enabled: false },
+        fontSize: 14,
+        automaticLayout: true,
+        scrollBeyondLastLine: false,
+        lineNumbers: 'on',
+        lineNumbersMinChars: 3,
+        lineDecorationsWidth: 5,
+        glyphMargin: false,
+        folding: true,
+        wordWrap: 'on'
       })
 
-      onCleanup(() => {
+      createEffect(() => {
         if (editorInstance) {
-          editorInstance.dispose()
+          editorInstance.updateOptions({
+            theme: isDark() ? 'vs-dark' : 'vs'
+          })
         }
       })
+
+      editorInstance.onDidChangeModelContent(() => {
+        const value = editorInstance.getValue()
+        if (hotReload()) {
+          saveCss(value, props.styleElm)
+        }
+      })
+    })
+
+    onCleanup(() => {
+      if (editorInstance) {
+        editorInstance.dispose()
+      }
     })
   })
 
