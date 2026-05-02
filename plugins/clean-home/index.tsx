@@ -49,6 +49,13 @@ const components = [
       div[class*=profileEffects] { display: none !important; }
     `
   },
+  {
+    name: 'Server tags',
+    description: 'Removes the server tags that appear next to people\'s names',
+    rules: `
+      div[class*=nameAndDecorators] span[class*=clanTag] { display: none !important; }
+    `
+  },
 
   // home page
   {
