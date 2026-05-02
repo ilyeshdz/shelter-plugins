@@ -19,7 +19,7 @@ const {
     CheckboxItem
   },
   plugin: { store },
-  solid: { createSignal, onMount, onCleanup },
+  solid: { createSignal, createEffect, onMount, onCleanup },
   flux: {
     dispatcher
   }
@@ -35,6 +35,10 @@ const saveCss = debounce((css: string, styleElm: HTMLStyleElement) => {
 
 let injectedCss = false
 
+const getDiscordTheme = (): boolean => {
+  return document.documentElement.classList.contains('theme-dark')
+}
+
 export default function (props: Props) {
   // eslint-disable-next-line prefer-const
   let ref: HTMLDivElement | undefined = null
@@ -46,8 +50,17 @@ export default function (props: Props) {
   }
 
   const [hotReload, setHotReload] = createSignal(true)
+  const [isDark, setIsDark] = createSignal(true)
 
   onMount(() => {
+    setIsDark(getDiscordTheme())
+
+    const observer = new MutationObserver(() => {
+      setIsDark(getDiscordTheme())
+    })
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    onCleanup(() => observer.disconnect())
+
     requestAnimationFrame(() => {
       const container = ref
       if (!container || editorInstance) return
@@ -60,7 +73,7 @@ export default function (props: Props) {
         editorInstance = monaco.editor.create(container, {
           value: store.inlineCss || '',
           language: 'css',
-          theme: 'vs-dark',
+          theme: isDark() ? 'vs-dark' : 'vs',
           minimap: { enabled: false },
           fontSize: 14,
           automaticLayout: true,
@@ -71,6 +84,14 @@ export default function (props: Props) {
           glyphMargin: false,
           folding: true,
           wordWrap: 'on'
+        })
+
+        createEffect(() => {
+          if (editorInstance) {
+            editorInstance.updateOptions({
+              theme: isDark() ? 'vs-dark' : 'vs'
+            })
+          }
         })
 
         editorInstance.onDidChangeModelContent(() => {
