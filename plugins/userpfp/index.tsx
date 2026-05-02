@@ -1,5 +1,3 @@
-import { createApi, webpackChunk } from '@cumjar/websmack'
-import { after } from 'spitroast'
 import { css, classes } from './index.scss'
 
 const {
@@ -16,35 +14,6 @@ const {
 
 const DATA_URL = 'https://userpfp.github.io/UserPFP/source/data.json'
 
-const chunk = webpackChunk()
-const wp = chunk && createApi([undefined, ...chunk])
-
-console.log('[UserPFP] webpackChunk:', !!chunk)
-console.log('[UserPFP] wp:', !!wp)
-
-// Try findByCode first (more reliable)
-const c = wp?.findByCode('getUserAvatarURL')
-console.log('[UserPFP] findByCode result:', c)
-
-if (c) {
-  after('getUserAvatarURL', c, (args, response) => {
-    const customUrl = window.userpfp?.getUrl(args[0])
-    console.log('[UserPFP] getUserAvatarURL called', args[0], 'customUrl:', customUrl, 'response:', response)
-    return store.preferNitro && response?.includes('a_') ? response : customUrl ?? response
-  })
-} else {
-  // Fallback to findByPropsAll
-  const c2 = wp?.findByPropsAll('getUserAvatarURL')
-  console.log('[UserPFP] findByPropsAll result:', c2)
-  for (const m of c2 || []) {
-    after('getUserAvatarURL', m, (args, response) => {
-      const customUrl = window.userpfp?.getUrl(args[0])
-      console.log('[UserPFP] getUserAvatarURL called', args[0], 'customUrl:', customUrl, 'response:', response)
-      return store.preferNitro && response?.includes('a_') ? response : customUrl ?? response
-    })
-  }
-}
-
 declare global {
   interface Window {
     userpfp: {
@@ -59,6 +28,26 @@ let injectedCss = false
 if (!injectedCss) {
   injectedCss = true
   injectCss(css)
+}
+
+const replaceAvatar = (img: HTMLImageElement) => {
+  const src = img.src
+  if (!src.includes('cdn.discordapp.com/avatars')) return
+
+  const match = src.match(/\/avatars\/(\d+)/)
+  if (!match) return
+
+  const userId = match[1]
+  const customUrl = window.userpfp?.getUrl(userId)
+
+  if (customUrl && img.src !== customUrl) {
+    img.src = customUrl
+  }
+}
+
+const processImages = () => {
+  const images = document.querySelectorAll('img[src*="cdn.discordapp.com/avatars"]')
+  images.forEach((img) => replaceAvatar(img as HTMLImageElement))
 }
 
 export const settings = () => (
@@ -85,7 +74,26 @@ export const onLoad = async () => {
     const resp = await fetch(DATA_URL)
     window.userpfp = await resp.json()
     window.userpfp.getUrl = (id: string) => window.userpfp.avatars[id] ?? null
-    console.log('[UserPFP] Loaded', Object.keys(window.userpfp.avatars || {}).length, 'avatars')
+
+    processImages()
+
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (node instanceof HTMLImageElement) {
+            replaceAvatar(node)
+          }
+          if (node instanceof Element) {
+            node.querySelectorAll('img[src*="cdn.discordapp.com/avatars"]').forEach((img) => {
+              replaceAvatar(img as HTMLImageElement)
+            })
+          }
+        }
+      }
+    })
+
+    observer.observe(document.body, { childList: true, subtree: true })
+
     showToast('UserPFP loaded!')
   } catch (e) {
     console.error('[UserPFP] Failed to load:', e)
