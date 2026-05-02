@@ -1,6 +1,4 @@
-import { CodeInput } from '@srsholmes/solid-code-input'
-import hljs from 'highlight.js/lib/core'
-import cssModule from 'highlight.js/lib/languages/css'
+import loader from '@monaco-editor/loader'
 
 import {css, classes} from './Editor.scss'
 import { debounce } from '../../../util/debounce.js'
@@ -12,8 +10,6 @@ interface Props {
   popout?: boolean
 }
 
-hljs.registerLanguage('css', cssModule)
-
 const {
   ui: {
     injectCss,
@@ -23,7 +19,7 @@ const {
     CheckboxItem
   },
   plugin: { store },
-  solid: { createSignal, createEffect },
+  solid: { createSignal, createEffect, onMount, onCleanup },
   flux: {
     dispatcher
   }
@@ -39,33 +35,86 @@ const saveCss = debounce((css: string, styleElm: HTMLStyleElement) => {
 
 let injectedCss = false
 
+const getDiscordTheme = (): boolean => {
+  return document.documentElement.classList.contains('theme-dark')
+}
+
 export default function (props: Props) {
   // eslint-disable-next-line prefer-const
-  let ref = null
+  let ref: HTMLDivElement | undefined = null
+  let editorInstance: any = null
 
   if (!injectedCss) {
     injectCss(css)
     injectedCss = true
   }
 
-  const [inlineCss, setInlineCss] = createSignal('')
   const [hotReload, setHotReload] = createSignal(true)
+  const [isDark, setIsDark] = createSignal(true)
 
-  createEffect(() => {
-    setInlineCss(store.inlineCss)
+  onMount(() => {
+    setIsDark(getDiscordTheme())
+
+    const observer = new MutationObserver(() => {
+      setIsDark(getDiscordTheme())
+    })
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+    onCleanup(() => observer.disconnect())
+
+    requestAnimationFrame(() => {
+      const container = ref
+      if (!container || editorInstance) return
+
+      loader.init().then((monaco) => {
+        if (editorInstance) {
+          editorInstance.dispose()
+        }
+
+        editorInstance = monaco.editor.create(container, {
+          value: store.inlineCss || '',
+          language: 'css',
+          theme: isDark() ? 'vs-dark' : 'vs',
+          minimap: { enabled: false },
+          fontSize: 14,
+          automaticLayout: true,
+          scrollBeyondLastLine: false,
+          lineNumbers: 'on',
+          lineNumbersMinChars: 3,
+          lineDecorationsWidth: 5,
+          glyphMargin: false,
+          folding: true,
+          wordWrap: 'on'
+        })
+
+        createEffect(() => {
+          if (editorInstance) {
+            editorInstance.updateOptions({
+              theme: isDark() ? 'vs-dark' : 'vs'
+            })
+          }
+        })
+
+        editorInstance.onDidChangeModelContent(() => {
+          const value = editorInstance.getValue()
+          if (hotReload()) {
+            saveCss(value, props.styleElm)
+          }
+        })
+      })
+
+      onCleanup(() => {
+        if (editorInstance) {
+          editorInstance.dispose()
+        }
+      })
+    })
   })
 
-  const setCss = (css: string) => {
-    if (ref) {
-      // Find the textarea in the ref, and autoscroll down
-      const textarea = ref.querySelector('textarea')
-      if (textarea && textarea.scrollTop !== textarea.scrollHeight) {
-        textarea.scrollTop = textarea.scrollHeight
-      }
+  const setCss = () => {
+    if (editorInstance) {
+      const value = editorInstance.getValue()
+      saveCss(value, props.styleElm)
     }
-
-    setInlineCss(css)
-    saveCss(css, props.styleElm)
   }
 
   return (
@@ -81,7 +130,6 @@ export default function (props: Props) {
                 Window()
               )
 
-              // This closes settings automagically
               dispatcher.dispatch({
                 type: 'LAYER_POP'
               })
@@ -102,27 +150,14 @@ export default function (props: Props) {
         </CheckboxItem>
 
         <Button
-          onClick={() => {
-            // Save inline CSS
-            setCss(inlineCss())
-          }}
+          onClick={setCss}
           disabled={hotReload()}
         >
           Save & Apply
         </Button>
       </div>
 
-      <div class={classes.ceditor} ref={ref} data-popout={props.popout ? 'true' : 'false'}>
-        <CodeInput
-          highlightjs={hljs}
-          autoHeight={false}
-          resize="none"
-          placeholder="Enter any CSS here..."
-          onChange={hotReload() ? setCss : setInlineCss}
-          value={inlineCss()}
-          language={'css'}
-        />
-      </div>
+      <div class={classes.ceditor} ref={ref} data-popout={props.popout ? 'true' : 'false'} />
     </>
   )
 }

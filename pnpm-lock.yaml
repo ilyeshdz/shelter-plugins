@@ -57,12 +57,9 @@ importers:
 
   plugins/inline-css:
     dependencies:
-      '@srsholmes/solid-code-input':
-        specifier: ^0.0.18
-        version: 0.0.18(@types/highlight.js@9.12.2)(@types/prismjs@1.26.0)(solid-js@1.8.7)
-      highlight.js:
-        specifier: ^11.9.0
-        version: 11.9.0
+      '@monaco-editor/loader':
+        specifier: ^1.7.0
+        version: 1.7.0
 
   plugins/platform-spoof:
     dependencies:
@@ -439,6 +436,9 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
+  '@monaco-editor/loader@1.7.0':
+    resolution: {integrity: sha512-gIwR1HrJrrx+vfyOhYmCZ0/JcWqG5kbfG7+d3f/C1LXk2EvzAbHSg3MQ5lO2sMlo9izoAZ04shohfKLVT6crVA==}
+
   '@napi-rs/wasm-runtime@0.2.12':
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
 
@@ -584,13 +584,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@srsholmes/solid-code-input@0.0.18':
-    resolution: {integrity: sha512-9qmWg7gL8f+wfUJjzikoYNMbcqewxzau50jGaUdYbqNLcQrAmbQLbwxCtwybZi/qoIVUWcSAEalD21y0ye+KJw==}
-    peerDependencies:
-      '@types/highlight.js': 9.12.2
-      '@types/prismjs': 1.26.0
-      solid-js: ^1.6.10
-
   '@tauri-apps/api@1.6.0':
     resolution: {integrity: sha512-rqI++FWClU5I2UBp4HXFvl+sBWkdigBkxnpJDQUWttNyG7IZP4FwQGhTNL5EOw0vI8i6eSAJ5frLqO7n7jbJdg==}
     engines: {node: '>= 14.6.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
@@ -601,14 +594,8 @@ packages:
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
-  '@types/highlight.js@9.12.2':
-    resolution: {integrity: sha512-y5x0XD/WXDaGSyiTaTcKS4FurULJtSiYbGTeQd0m2LYZGBcZZ/7fM6t5H/DzeUF+kv8y6UfmF6yJABQsHcp9VQ==}
-
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
-
-  '@types/prismjs@1.26.0':
-    resolution: {integrity: sha512-ZTaqn/qSqUuAq1YwvOFQfVW1AR/oQJlLSZVustdjwI+GZ8kr0MSHBj0tsXPW1EqHubx50gtBEjbPGsdZwQwCjQ==}
 
   '@typescript-eslint/eslint-plugin@8.50.1':
     resolution: {integrity: sha512-PKhLGDq3JAg0Jk/aK890knnqduuI/Qj+udH7wCf0217IGi4gt+acgCyPVe79qoT+qKUvHMDQkwJeKW9fwl8Cyw==}
@@ -920,10 +907,6 @@ packages:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
     engines: {node: '>= 0.4'}
 
-  highlight.js@11.9.0:
-    resolution: {integrity: sha512-fJ7cW7fQGCYAkgv4CPfwFHrfd/cLS4Hau96JuJ+ZTOWhjnhoeN1ub1tFmALm/+lW5z4WCAuAV9bm05AP0mS6Gw==}
-    engines: {node: '>=12.0.0'}
-
   idb@7.1.1:
     resolution: {integrity: sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ==}
 
@@ -1200,10 +1183,6 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  seroval@0.15.1:
-    resolution: {integrity: sha512-OPVtf0qmeC7RW+ScVX+7aOS+xoIM7pWcZ0jOWg2aTZigCydgRB04adfteBRbecZnnrO1WuGQ+C3tLeBBzX2zSQ==}
-    engines: {node: '>=10'}
-
   shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
     engines: {node: '>=8'}
@@ -1215,9 +1194,6 @@ packages:
   solid-js@1.6.16:
     resolution: {integrity: sha512-Ng4CahvLlpGA3BXIMiiMdwhI8WpObZ8gXqm97GCKR4+MpnODs6Pdpco+tmVCY/4ZDFaEKDxz7WRLAAdoXdlY7w==}
 
-  solid-js@1.8.7:
-    resolution: {integrity: sha512-9dzrSVieh2zj3SnJ02II6xZkonR6c+j/91b7XZUNcC6xSaldlqjjGh98F1fk5cRJ8ZTkzqF5fPIWDxEOs6QZXA==}
-
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
@@ -1227,6 +1203,9 @@ packages:
 
   spitroast@2.1.6:
     resolution: {integrity: sha512-xil2XeVh8WQoBlG8Lm8jT6ifqWGmSgTGq2clRcq2roycb0kg1h4fv5ydoiBId9kIQp4Y12PK/cjVzD8xpWXZvg==}
+
+  state-local@1.0.7:
+    resolution: {integrity: sha512-HTEHMNieakEnoe33shBYcZ7NX83ACUjCu8c40iOGEZsngj9zRnkqS9j1pqQPXwobB0ZcVTk27REb7COQ0UR59w==}
 
   strip-json-comments@3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
@@ -1654,6 +1633,10 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
+  '@monaco-editor/loader@1.7.0':
+    dependencies:
+      state-local: 1.0.7
+
   '@napi-rs/wasm-runtime@0.2.12':
     dependencies:
       '@emnapi/core': 1.7.1
@@ -1760,12 +1743,6 @@ snapshots:
   '@rolldown/binding-win32-x64-msvc@1.0.0-beta.1':
     optional: true
 
-  '@srsholmes/solid-code-input@0.0.18(@types/highlight.js@9.12.2)(@types/prismjs@1.26.0)(solid-js@1.8.7)':
-    dependencies:
-      '@types/highlight.js': 9.12.2
-      '@types/prismjs': 1.26.0
-      solid-js: 1.8.7
-
   '@tauri-apps/api@1.6.0': {}
 
   '@tybys/wasm-util@0.10.1':
@@ -1775,11 +1752,7 @@ snapshots:
 
   '@types/estree@1.0.8': {}
 
-  '@types/highlight.js@9.12.2': {}
-
   '@types/json-schema@7.0.15': {}
-
-  '@types/prismjs@1.26.0': {}
 
   '@typescript-eslint/eslint-plugin@8.50.1(@typescript-eslint/parser@8.50.1(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)(typescript@5.9.3)':
     dependencies:
@@ -2154,8 +2127,6 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  highlight.js@11.9.0: {}
-
   idb@7.1.1: {}
 
   ignore@5.3.2: {}
@@ -2380,8 +2351,6 @@ snapshots:
 
   semver@7.7.3: {}
 
-  seroval@0.15.1: {}
-
   shebang-command@2.0.0:
     dependencies:
       shebang-regex: 3.0.0
@@ -2392,16 +2361,13 @@ snapshots:
     dependencies:
       csstype: 3.2.3
 
-  solid-js@1.8.7:
-    dependencies:
-      csstype: 3.2.3
-      seroval: 0.15.1
-
   source-map-js@1.2.1: {}
 
   spitroast@1.4.4: {}
 
   spitroast@2.1.6: {}
+
+  state-local@1.0.7: {}
 
   strip-json-comments@3.1.1: {}
 
