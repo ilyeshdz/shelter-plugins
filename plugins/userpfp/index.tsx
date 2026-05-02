@@ -7,13 +7,14 @@ const {
     SwitchItem,
     LinkButton,
     injectCss,
+    TextBox,
   },
   plugin: {
     store
   }
 } = shelter
 
-const DATA_URL = 'https://userpfp.github.io/UserPFP/source/data.json'
+const DEFAULT_DATA_URL = 'https://userpfp.github.io/UserPFP/source/data.json'
 
 const chunk = webpackChunk()
 const wp = chunk && createApi([undefined, ...chunk])
@@ -50,6 +51,15 @@ export const settings = () => (
       Submit your PFP here!
     </LinkButton>
 
+    <div class={classes.settingItem}>
+      <TextBox
+        type="text"
+        value={store.databaseUrl || ''}
+        onInput={(v: any) => (store.databaseUrl = v)}
+        placeholder="Custom database URL (optional)"
+      />
+    </div>
+
     <SwitchItem
       value={store.preferNitro}
       onChange={(v) => (store.preferNitro = v)}
@@ -61,7 +71,8 @@ export const settings = () => (
 )
 
 export const onLoad = async () => {
-  const resp = await fetch(DATA_URL)
+  const dataUrl = store.databaseUrl || DEFAULT_DATA_URL
+  const resp = await fetch(dataUrl)
   window.userpfp = await resp.json()
   window.userpfp.getUrl = (id: string) => window.userpfp.avatars[id] ?? null
 }
