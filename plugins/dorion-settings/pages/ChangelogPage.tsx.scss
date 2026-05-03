@@ -1,11 +1,8 @@
 .tophead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 16px;
-}
-
-.refresh {
-  position: absolute;
-  top: 52px;
-  right: 40px;
 }
 
 .card {
