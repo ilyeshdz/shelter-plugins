@@ -109,6 +109,7 @@ export function SettingsPage() {
             value: parseFloat(v) / 100,
           })
         }}
+        tick={25}
       />
       <SwitchItem
         value={settings().sys_tray}
