@@ -18,6 +18,7 @@
 - [Plugins](#plugins)
   - [Always Trust](#always-trust)
   - [Blur NSFW](#blur-nsfw)
+  - [Bulk Leave](#bulk-leave)
   - [Declutter](#declutter)
   - [Disable F1](#disable-f1)
   - [Inline CSS](#inline-css)
@@ -48,6 +49,12 @@ Blur images and videos in NSFW channels. Hover to unblur, the click-preview is a
 `https://spikehd.dev/shelter-plugins/blur-nsfw/`
 
 ![blurnsfw](https://github.com/SpikeHD/shelter-plugins/assets/25207995/921f5add-7d3e-4885-9d0b-a95b483caab6)
+
+## Bulk Leave
+
+Leave multiple servers at once.
+
+`https://spikehd.dev/shelter-plugins/bulk-leave/`
 
 ## Declutter
 
